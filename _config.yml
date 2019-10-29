@@ -1,11 +1,11 @@
 # Site settings
-author: Srikalyan Megati
-title: 
+author: Kal
+title: A Cluttered Workbench
 header-img: img/home-bg.png
 email: kalmegati@gmail.com
-copyright_name: Srikalyan Megati
+copyright_name: Kal
 description: > # this means to ignore newlines until "baseurl:"
-  
+  conception before clutter, clutter until complete
 baseurl: "" # the subpath of your site, e.g. /blog
 twitter_username: 
 github_username:  KalMegati
