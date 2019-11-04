@@ -1,7 +1,7 @@
 ---
 layout: post
 title:      "PROJECT 1 - RUBY CLI"
-date:       2019-11-04 18:16:00 +0000
+date:       2019-11-04 13:16:01 -0500
 permalink:  project_1_-_ruby_cli
 ---
 
