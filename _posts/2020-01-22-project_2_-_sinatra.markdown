@@ -38,18 +38,23 @@ But it was in that git-deprived moment that I had placed myself, working on my p
 
 ACTIVATION ENERGY
 
-I studied Chemical Engineering at college, so give me a bit as I move to a different field of analogies.
+I studied Chemical Engineering at college, so give me a bit as I move to a different field of analogies. Let's take Water, good old H2O, made of *H*ydrogen and *O*xygen. In order for these gasses to react with each other and form water, energy is required to excite them into a volatile state. To just visualize it from the model below, imagine a ball
 
+![Over the Hill](https://www.siyavula.com/read/science/grade-11/energy-and-chemical-change/images/6db018d0e2786d2760763e37200c93fb.png)
 
-Imagine a ball at a position like 
+Water is made of 3
+
+Let's think of a code project like such a reaction. We're starting from basic concepts and using them to creating something more complex. 
+
+This is the idea behind Github: save your work at its stable states, so that if a particular stretch of coding goes in the wrong direction and will not be useful enough to overcome that "activation energy", we can fall back to the last stable state and start again from there, rather than having to try changing directions while you're still on the slope with unstable code.
 
 Naturally, this begs the question
 
 And here is where I can bring us back to coding, because this is largely related to the usefulness of GitHub.
 
-Working on my Ruby CLI I maintained a strict protocol: `git add .` > `git commit -m` > `git push`
+Working on my Ruby CLI I maintained a strict protocol: `git add .` > `git commit -m` > `git push`. In fact, you can throw a `git status` before every step and at the end just to settle my mind goblins on just where in the push protocol I was.
 
-Working on The Usual Spot has been considerably different.
+Working on The Usual Spot has been considerably different. I try to add files to my commits individually so I can mentally keep track of what I changed in each. And often I'll have many updated files that, thought I worked on them concurrently, I want split into multiple commits rather than a single one, to reflect progress on different fronts of the application. For instance, establishing authentication and preventing propogation of bad data required safeguards in mostly the same files and methods, so I was working on them concurrently. However, as actual concepts they are more distinct, and my approach to solving them also differed (using Sinatra's prebuilt methods for data-checking but building my own code for authentication), and so I broke the work up into two different commits. Then there was also the further work of 
 
 I tend to pile up multiple commits
 
