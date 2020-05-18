@@ -1,10 +1,12 @@
 ---
 layout: post
 title:      "Project 4: JavaScript and Rails"
-date:       2020-05-11 02:51:15 +0000
+date:       2020-05-10 22:51:16 -0400
 permalink:  project_4_javascript_and_rails
 ---
 
+
+So uh, quarantine life?
 
 It's a matter of solving the problem you have in front of you and getting the immediate solution. And then solving the many more problems that the immediate solution created.
 
