@@ -48,4 +48,8 @@ Flatiron uses the allegory of a restaurant to describe asynchrony: begin cooking
 
 Rather than having it be so obviously apparent what corner I cut, and allow users to see my elements so obviously loading in procedurally, I could adapt asynchronous logic to my presentation as well.
 
-What if the character selection menu didn't even exist until the user confirmed that they wanted to make a character? This would separate the scraping (occurs when the DOM is loaded) from the dropdown-filling (occurs when "New Character" is clicked). Doing this would mean that the average user would not see the timing glitch occur, unless they intentionally tried to click on "new character" as fast as possible as the page was loading.
+What if the character selection menu didn't even exist until the user confirmed that they wanted to make a character? This would separate the scraping (occurs when the DOM is loaded) from the dropdown-filling (occurs when "New Character" is clicked). Doing this would mean that the average user would not see the timing glitch occur, unless they intentionally tried to click on "new character" as fast as possible as the page was loading. There's a metaphor here to make relating to grocery stores only allowing a maximum number of people in them, but it doesn't mesh with the restaurant metaphor that well. Oops.
+
+AND SO WE WAIT
+
+
