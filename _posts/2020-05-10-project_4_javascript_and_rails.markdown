@@ -8,48 +8,40 @@ permalink:  project_4_javascript_and_rails
 
 So uh, quarantine life, right?
 
-It took me a bit to figure out what the backbone motif of this post was going to be; perhaps I'm just falling back on what's topical, but I'd say there's a real connection here. Javascript is a big jump away from the Ruby that we've been working on until this point, being a whole new language when previously Ruby > ActiveRecord > Rails all used the same language. And needless to say, Covid-19 has also wracked the world with a new status quo; our new "language" is manifest in our communications being much more predominantly over Zoom and Skype rather than in-person. But perhaps things are still more familiar than they might let on. 
+It took me a bit to figure out what the backbone motif of this post was going to be; perhaps I'm just falling back on what's topical, but I'd say there's a real connection here. Javascript is a big jump away from the Ruby that we've been working on until this point, being a whole new language when previously Ruby > ActiveRecord > Rails all used the same language. And needless to say, Covid-19 has also wracked the world with a new status quo; our new "language" is manifest in our communications being much more predominantly over Zoom and Skype rather than in-person. But perhaps things are still more familiar than they might let on. Ultimately, Covid-19 and my journey through JS has had a similar arc: ignoring the first hurdle, failing at the second, and the arduous process of trying to wring success from a bad start.
 
-ISOLATED TESTING
+### SOCIAL DISTANCING
 
 All of my JS coding begins in the browser console. It is here that I try out individual queries and method chains to see what can return the information I want. For instance, I wanted to be able to grab all of the background links from the Backgrounds page. I would first confirm that `document.querySelector("a")` got me a list that would include all the links I wanted (plus some extras), and then parse the results until I refined it down to just the links I wanted. I had quite the chain when I was done:
-
 `Array.from(myDom.getElementsByTagName("h1")).filter(heading => heading.className === "title").map(x => x.getElementsByTagName("a")[1]).filter(x => !!x);`
+With a useful sequence in hand, I record it in `phrases.js`. I think of this as a staging area, where all my individual snippets of useful code exist, but not yet strung together in a way that presents a greater functionality for my project. So far, so good.
+Code that has cleared testing for phrasing can proceed to "index.js". Here is where we make sure that the phrases we've made can speak to each other without stepping on each other's toes. Let's think of this as the electronic equivalent of staying six-feet away from your fellow queries.
+At this point you may have noticed my mistake. I've been building my code piece by piece with regard to how each individual snippet adds on to the whole but without regard to how it would add to a subdivision of the whole. I had put together a procedural run of queries, but they were not organized into classes. Admittedly, this was sort of my plan from the start: get the code working procedurally, because obviously that would be the hard part and reformatting into classes would be simpler. Not quite.
 
-With a useful serum in hand, I record it in `phrases.js`. I think of this as a staging area, where all my individual snippets of useful code exist, but not yet strung together in a way that presents a greater functionality for my project.
+### CONTACT TRACING
 
-SOCIAL DISTANCING
+What is dependent, and what is not dependent? Object instances in JS are initialized with key value pairs. This could pose an issue where any time I wanted to reference a Character instance, I would need to write all of the possible attributes from my Rails object into my JS Character class. Probably forgivable, but it would be an instance of WETness that I abruptly found a way around. What if instead of making a JS Character object equivalent to a Rails Character object, I made the JS object a container that stored the Rails object?
+This provided two great advantages. For one, it meant that I would not need to piecewise translate my Rails Character object attributes into JS Character object attributes. I could just `Character.new(json)`, where the json returned was the Rails object. I do not specify any of the attributes (like `ancestry` or `background`) of a Character in my JS class, but I can still call them because my reader methods have essentially carried over from rails.
+And on the opposite front, it means I can define a JS Character object as minimally as I need to. I made exemplary use of this in my characters#destroy pathway. Because it is a request that will route through CharactersController, I would need to keep it as part of my JS Character class in order to keep the logic. JS Character must be initialized with a character object, but #destroy begins with the Delete button. The only information that my Delete button gives to create a JS Character object is an ID, but because I can create this object as simply:
+`Character.new({id: 3})`
+I don’t even need any further information. `Character.new({id: 3}).deleteCharacter` communicates with Rails solely using the ID attribute, so the fact that the JS Character object is missing information crucial to an actual Rails Character object is not a problem.
+From here I decided on a standard: all buttons will point to a single router. The router will point to JS class methods. These methods will be the fetch requests that dive into the backend. As I break the code into classes, it then becomes necessary to rethink their routing. What were once general method calls now needed to operate on class instances (ie `playerCard(player)` was now `Player.new(*args).playerCard()`). It wasn't long before the sobering truth hit me: trying to take this unorganized deluge of script and section it into classes had turned into a much more arduous process than it would have been had I planned around classes in the first place.
+I had jumped to the halfway mark and was now split between trying to fill in everything I had left to do (presenting character information to the user and allowing different ways of accessing it) and also backfilling everything I had skipped over (actually making character operate through a JS class rather than procedurally). Needing to redo my work on the early stuff meant that the actual presentation of my application was in a state where it was not growing in any way and often taking steps back, but if I just bullheadedly pressed ahead I would be left with an even bigger hurdle later of needing to retrace the new steps as well.
+There’s not really a trick solution to this; or at least, I didn’t find one. It was more a lesson. I had gotten to this point in my JS project because I had been following the same patterns I was using for my Ruby projects: working code first, organized code after. But as my projects get bigger and gain more moving parts, code being organized properly is crucial to get it working at all.
 
-Code that has cleared testing for phrasing can proceed to "index.js". Here is where we make sure that the phrases we've made can speak to each other without stepping on each other's toes. Let's think of this as the electronic equivalent of six-feet away.
-
-What is dependent, and what is not dependent?
-
-I made exemplary use of this in my characters#destroy pathway. Because it is a request that will route through CharactersController, I would need to keep it as part of my JS Character class in order to keep the logic. JS Character must be initialized with a character object, but #destroy begins with the Delete button. 
-
-CONTACT TRACING
-
-As I break the code into classes, it then becomes necessary to rethink their routing. What were once general method calls now needed to operate on class instances (ie `playerCard(player)` was now `player.playerCard()`).
-
-I decided on a standard: all buttons will point to a single router. The router will point to JS class methods. These methods will be the fetch requests that dive into the backend.
-
-NOT JUST THE FLU
-
-
-
-OPENING EARLY
+### OPENING EARLY
 
 It is important to make sure that a problem is actually solved before you start operating as if it is solved. Step too soon, and it can become a matter of solving the problem you have in front of you and only getting the immediate solution. And then solving the many more problems that the immediate solution created.
-
-In my case, the problem was one of synchronous execution: the code that reads the gathered list of options and stacks them into the dropdown menus was executing before the code that would actually scrape and gather those options would execute. The initial result of this problem was quite ugly: my code would look for the list of options, see `undefined` where they should be, get upset, and fail gracelessly. Tackling the symptom first, I was able to make it fail grace*fully* instead by creating an empty array to be filled by the scraper; this would render my select boxes at least, though they would still be empty because the dropdown filler was executing before the scraper.
-
+In my case, the new problem was one of synchronous execution: the code that reads the gathered list of options and stacks them into the dropdown menus was executing before the code that would actually scrape and gather those options would execute. The initial result of this problem was quite ugly: my code would look for the list of options, see `undefined` where they should be, get upset, and fail gracelessly. Tackling the symptom first, I was able to make it fail grace*fully* instead by creating an empty array to be filled by the scraper; this would render my select boxes at least, though they would still be empty because the dropdown filler was executing before the scraper.
 And there was a pretty easy immediate solution to this: set an excessive timer on the dropdown filler to make sure it waits for the scraper. In fact this is the solution that I had in my first demo. Assuming I haven't replaced it by the time you read this, pay attention at the end of the video: you might notice that the select boxes just straight up don't load after one of my refreshes. This is asynchronous coding, and works perfectly fine server-side. But I found it unsatisfying client-side.
-
 Flatiron uses the allegory of a restaurant to describe asynchrony: begin cooking the entrees while you serve the customer breadsticks and drinks, to tide them over as they wait. Basically, doing work in an order that will get the immediately relevant stuff to the user quickly, while in the "back room" you work on the stuff that they'll get to. There's an aspect of this metaphor that my solution did not yet account for: the "back room". But having my dropdowns visibly fill in after the page has loaded, it's the equivalent of making the customers dine in the kitchen and having them need to sit through the cooks yelling at each other to throw food into different ovens (okay, there are restaurants where this is part of the gimmick; Hibachi's pretty great, but bear with me).
-
 Rather than having it be so obviously apparent what corner I cut, and allow users to see my elements so obviously loading in procedurally, I could adapt asynchronous logic to my presentation as well.
-
 What if the character selection menu didn't even exist until the user confirmed that they wanted to make a character? This would separate the scraping (occurs when the DOM is loaded) from the dropdown-filling (occurs when "New Character" is clicked). Doing this would mean that the average user would not see the timing glitch occur, unless they intentionally tried to click on "new character" as fast as possible as the page was loading. There's a metaphor here to make relating to grocery stores only allowing a maximum number of people in them, but it doesn't mesh with the restaurant metaphor that well. Oops.
 
-AND SO WE WAIT
+### AND SO WE WAIT
 
+I would not call the Path 2 Adventure a failure. It works, and after tidying up the coding my script even looks respectable. But my process working on it has been a disappointment. I ran in dreaming up my most ambitious project yet, but I failed to plan out my deliverables and organize my code as I was working on it (rather than brushing that off for later). So much of my time was burnt on refactoring that would not have been necessary had I built my front end with classes in mind originally, rather than needing to comb through sprawling lines of code to figure out what was and wasn’t Class-compatible. Thus I ended up with a project that was no more functional on day 12 than it was on day 2. For all the coding commotion under the hood, from above my program was stagnant. And as I lean back in my chair and stare out the window, I see the world much the same. Well okay, from my chair all I can see out the window is the sky and some treetops, so that isn’t really the Covid’s fault.
+I hope that this frustration can be productive. Adjusting to the quarantined world and adjusting to a new language have been a struggle, wrenching me out of my comfort zone and demanding an adaptability from me that, at this first struggle, I do not believe I demonstrated. But I think I’ve adjusted. This is the world now, and this is my code now. React/Redux is up next, my final chance to go all out and show Flatiron they were right to take me on. 
+
+I’m ready.
 
