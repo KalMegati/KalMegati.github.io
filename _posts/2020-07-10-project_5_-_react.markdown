@@ -8,7 +8,6 @@ permalink:  project_5_-_react
 
 I am a programmer, and I am also other things. Today (or like, this week; I spent a while on this post), I am a programmer and an actor.
 
-
 ### Blocking
 
 Theatre is determined by the stage. "Blocking" refers to the placement of actors as they move about the scene. The basic theory is that different parts of the stage serve different purposes, largely based on the audience's view, and so a work can be made stronger by keeping these purposeful stage positions in mind when directing. If your lead stands at centerstage and looks to rightstage, the audience will likely follow the lead's sightline, allowing them a perfect view to see another character make their entrance from rightstage (or distracting them from the character making their entrance from leftstage).
@@ -25,23 +24,25 @@ Clicking on any navigation, from the top bar or the left menu, will change what 
 
 ### Audience
 
-Theatre is determined by the audience. All manner of creators have their visions molded by what they want to give to their audience. This is particularly important as an application designer, because once an app is deployed you cannot modify the experience you've sent out except with new versions (which may come too late or too inaccessibly). 
+Theatre is determined by the audience. All manner of creators have their visions molded by what they want to give to their audience. This is particularly important as a designer of consumer applications, because the application is going to be used by many people largely divorced from what the designer considers is the ideal setting; while a director can be assured that their audience is arranged in angled auditorium seating for established show times, the programmer must anticipate thier users lounging on their couch, seated at a cafe, or any number of impromptu settings where the user pulls up the application.
 
-So what is the intended user experience of Tabula Rasa? As titled, Tabula Rasa is meant to be a "blank slate". A surface to 
+So what is the intended user experience of Tabula Rasa? As titled, Tabula Rasa is meant to be a "blank slate". A surface upon which the user has as much control as they would if they were drawing on a sheet of paper. There are already many character sheets for various games that are functional for keeping information organized, but their rigid structure can somewhat push the player to curtail their ideas in order to better fit the template. The reason there are so many different standards of character sheets, even for the same game systems, is because there are many different players with different needs and desires. This is my audience; they are not legion, but rather omnifrarious. Tabula Rasa means to provide a way for users to make their own character sheets, as abstract or as specific and with all the boxes and subdivisions they want or don't.
 
-as easily as you could draw on a sheet of paper.
+This brings us to the Element component. At it's most basic, it is derived from the standard "Card" Bootswatch html element, with a header and body text. My thought was to break this card up into a user-chosen number of segments, such that this one visual would be able to account for both deep and streamlined systems, from Pathfinder's Feats (which expect an integer for level, a feat name, prerequisites, a flavor description, and a mechanical description) to Fate's Aspects (which are simply a short descriptive phrase).
 
-Character sheets are excellent for keeping information organized, but their rigid structure makes them
+And a crucial personal requirement was that Element be a presentational component. It would display only based on the information it received as props rather than requesting it. However, this ends up demanding a bit more complexity in the render statement than you would expect of a presentational component, as each text space had to be expressed not just as an element but rather as a function that would conditionally display the text. So in addition to the displayed descriptions to fill out the card's text spaces, Element would also need to take in props that would allow it to determine weather or not to even display those text spaces at all.
 
-Tabula Rasa is means to provide a way for users to make their own character sheets, as abstract or as specific and with all the boxes and subdivisions they want or don't.
+I found it easiest to determine the active text spaces with an array, but a Rails backend does not store objects with arrays as attributes. This meant sending the activity array to the server as a joined string, and then destructuring the string once it came back to the client. 
 
-This requires a considerable amount of communication within the component.
+This requires a considerable amount of communication within the component. 
 
 Though the page previews the element's appearance, the request to create the element is not made until the user submits the form.
 
-I found it easiest to determine active element fields with an array, but Rails does not store objects with arrays as attributes. This meant sending the activity array to the server as a joined string, and then destructuring the string once it came back to the client.
 
-Related to blocking above, the Element preview is placed between the text inputs and the area checkboxes.
+
+
+
+Thinking of a text space as its compositional elements (that is, the text and the space), I felt it would be most intuitive to have control over these sectioned accordingly. Related to blocking above, the Element preview is placed between the text inputs and the space checkboxes. This means that any changes you make to the respective input will be visible directly to the left or right of the input, rather than on the opposite side of the screen (if I 
 
 ### Voice
 
@@ -70,7 +71,7 @@ But it is just as impossible to remove the actor's voice. An excellent performan
 
 Kenneth Branagh's Hamlet, David Tennant's Hamlet, and Ethan Hawke's Hamlet (yeah I saw that one too) are all largely informed by the actors that portray them.
 
-So what is my voice, or perhaps my sight, for as a colorblind coder?
+So what is my voice, or perhaps my vision, for as a colorblind coder?
 
 ### Arc
 
@@ -78,3 +79,5 @@ So what is my voice, or perhaps my sight, for as a colorblind coder?
 
 
 This is why it was so important that for this project I be an actor. Because when I design applications, I will not be designing for a static checklist; I will be designing for a dynamic audience.
+
+And so I present Tabula Rasa, a blank slate. I can't give you a further heading than that, because I think by concept I'm not supposed to. This experience is yours to enjoy.
