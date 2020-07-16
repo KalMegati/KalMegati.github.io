@@ -32,52 +32,30 @@ This brings us to the Element component. At it's most basic, it is derived from 
 
 And a crucial personal requirement was that Element be a presentational component. It would display only based on the information it received as props rather than requesting it. However, this ends up demanding a bit more complexity in the render statement than you would expect of a presentational component, as each text space had to be expressed not just as an element but rather as a function that would conditionally display the text. So in addition to the displayed descriptions to fill out the card's text spaces, Element would also need to take in props that would allow it to determine weather or not to even display those text spaces at all.
 
-I found it easiest to determine the active text spaces with an array, but a Rails backend does not store objects with arrays as attributes. This meant sending the activity array to the server as a joined string, and then destructuring the string once it came back to the client. 
+A peek under the hood at this convolution might not be the prettiest, but when its neatly packaged as the Element component it's ability to slot in is just beautiful. I designed it foremost to fit into a Character Sheet, where multiple would render based on the array of Elements in a Character object, simply handling Element presentation. But it ended up equally useful for the purpose of Element generation when slotted into Element Screen. Element Screen holds the form used to make the entries for a new Element, but I was also able to include an instance of the Element component that would directly display the format of the prospective Element.
 
-This requires a considerable amount of communication within the component. 
+This requires a considerable amount of communication within the Element Container. Its state updates as inputs are made, and the preview Element changes as the state updates. This was another important user-focused concern. If my form did not include a preview, then a user would need to head to the respective Character Sheet with each created Element to make sure that it was displaying as intended, and having to navigate back and remake the Element if not. This means waiting on a server request each time a format is attempted. Having a preview however, especially one that updates instantly upon changes without making server requests, gives more power to the user to compare two slightly different formats or wordings of their Element.
 
-Though the page previews the element's appearance, the request to create the element is not made until the user submits the form.
-
-
-
-
-
-Thinking of a text space as its compositional elements (that is, the text and the space), I felt it would be most intuitive to have control over these sectioned accordingly. Related to blocking above, the Element preview is placed between the text inputs and the space checkboxes. This means that any changes you make to the respective input will be visible directly to the left or right of the input, rather than on the opposite side of the screen (if I 
+Related to blocking above, it helps to consider where the audience's attention is drawn. Thinking of a text space as its compositional elements (that is, the text and the space), I felt it would be most intuitive to have control over these sectioned accordingly. Related to blocking above, the Element preview is placed between the text inputs and the space checkboxes. This means that any changes you make to the respective input will be visible directly to the left or right of the input, rather than on the opposite side of the screen (as it would be if they were arranged in text-input > checkbox > preview order).
 
 ### Voice
 
-And ultimately, theatre is determined by the actor.
+And ultimately, theatre is determined by the actor. An excellent performance is just as much the work of the actor's portrayal as it is the character's writing, even if this is not so visible to the audience. Kenneth Branagh's Hamlet, David Tennant's Hamlet, and Ethan Hawke's Hamlet (yeah I saw that one too) are all largely informed by the actors that portray them. And an application is largely going to be informed by the considerations that the programmer makes, considerations with are borne from the programmer's unique vision. So what is this programmer's unique vision?
 
+I am red-green colorblind. It's something that has mostly settled into the background of my life; I can read traffic lights fine, so it doesn't matter too much. But it bleeds forward every so often. I'll be playing a game with friends and need to ask for the blue tokens. The text that Learn.co uses for lesson tests contrasts red and green, so I need to carefully read each line to discern between successes and failures. Christmas time in general is weird because most of the imagery is likely supposed to be uplifting to people thanks to the vibrant contrast, but the color schemes simply look like a jagged mess of near-browns to me.
 
-There's a 
+So if my personal concern is how I can view something in a color scheme that is appropriate for me, then how might I be able to allow my users to view Tabula Rasa in a color scheme that is appropriate for them? There is already a solid precedence for this: many websites have a "dark" and "light" mode that users will toggle based on their surroundings. Surely it would not be so difficult to implement multiple color schemes by this same logic, or eventually even let a user build their own custom color scheme. This would not simply benefit those with vision difficulties, but even add functionality for people who wanted more control over their sheets: maybe the game I'm playing has multiple types of Element, and so I want my "aspects" colored dark blue and my "stunts" colored light blue.
 
-Again, React was here to help me, but not quite by design.
-
-This required recontextualizing a component not as a package of JS script (slotted into a functional code), but rather as a JS file (within a file directory). As coded components, each Style is functionally identical. It accepts no props and only renders the App component. But as a file, each imports a different Bootswatch CSS file to serve as the display's aesthetic. So by implementing a a switch case between these Styles in a high level of the application, I could have the app displayed in entirely different aesthetics that users could select dynamically.
+Again React was here to help me, but not quite by design. Allowing users to adjust their styling required recontextualizing a component not as a package of JS script (slotted into a functional code), but rather as a JS file (within a file directory). As coded components, each Style is functionally identical. It accepts no props and only renders the App component. But as a file, each imports a different Bootswatch CSS file to serve as the display's aesthetic. So by implementing a a switch case between these Styles in a high level of the application, I could have the app displayed in entirely different aesthetics that users could select dynamically.
 
 Of course, trying to treat components in this unconventional way had its struggles. Once a file is imported, it remains even if the component that imported it is unmounted. This is because, while an unmounted component will no longer show its render, the import command outside of the component code has still executed once, and so that file is here to stay. But this would not stop a new CSS file being imported if the Style was changed, meaning the App will try to style itself using all of the CSS files installed so far. Priority will go to the last one installed, but there are still many areas of non-overlap that will make, for instance, a lone Slate style look different from a Slate style with a Cerulean style before it. Imagine the Bishop of Digne offering Jean Valjean shelter in his saintly church, but the orchestra is still blaring the authoritarian "Look Down" from the previous scene. Not great. So I had to make sure that the aesthetic, or CSS file, from the previous scene was cleared away before introducing a new one. And unfortunately for Tabula Rasa, I could only accomplish this by requiring a page refresh.
 
-But this presented further complications: refreshing the page would also refresh the Redux Store, which I had previously thought to use as the source of truth for the current user. 
+But this presented further complications: refreshing the page would also refresh the Redux Store, which I had previously thought to use as the source of truth for the current user. Thankfully, I have a Rails backend! It comes equipped with a hash for storing information through a session...or rather it would, if I had generated a full Rails backend and not an API. As it turns out, the API excludes certain scripts necessary to maintain the session, but the server requests I have written into my frontend (per project requirements) are not compatible with a full backend. So sad...though it means I've got some updates to make in the near future (in fact, how about I promise you that I've made them by the time you read this?).
 
-I've seen well enough explanations for why I shouldn't be using Local Storage for sensitive user information...or not enough, considering I've done so anyway.
-
-Explore before refining.
-
-
-
-The character's voice is important by concept.
-
-But it is just as impossible to remove the actor's voice. An excellent performance is just as much the work of the actor's portrayal as it is the character's writing, even if this is not so visible to the audience.
-
-Kenneth Branagh's Hamlet, David Tennant's Hamlet, and Ethan Hawke's Hamlet (yeah I saw that one too) are all largely informed by the actors that portray them.
-
-So what is my voice, or perhaps my vision, for as a colorblind coder?
+So there I am devoid of a session from my backend; how is one to finangle a session analogue in JS? There's a number of right ways to do so. There's also the Local Storage object. I've seen well enough explanations for why I shouldn't be using Local Storage for sensitive user information...or not enough, considering I've done so anyway. Now my store initiates based on the Local Storage, and logging in updates the Local Storage with the latest user. Yeah I'm going to need to fix those server requests when I update my backend anyway, so why not have some coding heresy in the frontend in the meantime? That should put some urgency in my system.
 
 ### Arc
 
+I joined Flatiron because I realized that I wanted to design for disability. I waxed about this aspiration in my interview and I do not doubt it played a large part in my acceptance. But starting with code and actually working within project deadlines made me lose that fire at first. In prioritizing meeting requirements before anything, I robbed myself of the first steps after creation, when a new project is unbound is not yet tethered to what it must become and can instead take any route to get there, so long as I am ambitious enough to take the innovative route instead of the easy route. This is why it was so important that for this project I be an actor, to design for an audience and not a checklist.
 
-
-
-This is why it was so important that for this project I be an actor. Because when I design applications, I will not be designing for a static checklist; I will be designing for a dynamic audience.
-
-And so I present Tabula Rasa, a blank slate. I can't give you a further heading than that, because I think by concept I'm not supposed to. This experience is yours to enjoy.
+And so I present to Tabula Rasa, a blank slate. I can't give you a further heading than that, because I think by concept I'm not supposed to. This experience is yours to enjoy.
